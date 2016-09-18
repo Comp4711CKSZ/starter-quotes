@@ -63,6 +63,5 @@ class Quotes extends CI_Model {
                 'what' => $record['what']));
             $this->data['authors']=$author;
             $this->render();
-            
         }
 }
