@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This is a "CMS" model for quotes, but with bogus hard-coded data,
  * so that we don't have to worry about any database setup.
@@ -8,7 +7,6 @@
  * @author jim
  */
 class Quotes extends CI_Model {
-
 	// The data comes from http://www.quotery.com/top-100-funny-quotes-of-all-time/?PageSpeed=noscript
 	var $data = array(
 		array('id' => '1', 'who' => 'Bob Monkhouse', 'mug' => 'bob-monkhouse-150x150.jpg', 'where' => '/sleep',
@@ -26,13 +24,11 @@ class Quotes extends CI_Model {
                 array('id' => '7', 'who' => 'Avata', 'mug' => 'id-2-avatar-150x150.jpg', 'where' => '/comp4711/wisdom',
 			'what' => 'Those people who think they know everything are a great annoyance to those of us who do.')
 	);
-
 	// Constructor
 	public function __construct()
 	{
 		parent::__construct();
 	}
-
 	// retrieve a single quote
 	public function get($which)
 	{
@@ -42,11 +38,26 @@ class Quotes extends CI_Model {
 				return $record;
 		return null;
 	}
-
 	// retrieve all of the quotes
 	public function all()
 	{
 		return $this->data;
 	}
-
+        
+        public function random()
+        {
+            $this->data['pagebody'] = 'homepage';
+            $source = $this->quotes->all();
+            $author = array();
+            
+            $count = sizeof($source);
+            $authorNum = rand(0, $count - 1);
+            $record = $source[$authorNum];
+            array_push($author, array('who' => $record['who'],
+                'mug' => $record['mug'], 'href' => $record['where'],
+                'what' => $record['what']));
+            $this->data['authors']=$author;
+            $this->render();
+            
+        }
 }
